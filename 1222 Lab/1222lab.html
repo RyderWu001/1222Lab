@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Form</title>
+</head>
+<body>
+
+    <form action="#">
+        <input id="rollButton" type="button" value="Roll Dice">
+    </form>
+    <img id="die1" src="die1.png" alt="blank image">
+    <img id="die2" src="die2.png" alt="blank image">
+    <img id="die3" src="die3.png" alt="blank image">
+    <img id="die4" src="die4.png" alt="blank image">
+    <img id="die5" src="die5.png" alt="blank image">
+    <img id="die6" src="die6.png" alt="blank image"><br>
+    <img id="die7" src="die1.png" alt="blank image">
+    <img id="die8" src="die2.png" alt="blank image">
+    <img id="die9" src="die3.png" alt="blank image">
+    <img id="die10" src="die4.png" alt="blank image">
+    <img id="die11" src="die5.png" alt="blank image">
+    <img id="die12" src="die6.png" alt="blank image">
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Face</th>
+                <th>Count</th>
+                <th>Percent(%)</th>
+            </tr>
+        </thead>
+        <tbody id="resultTableBody"></tbody>
+    </table>
+
+    <script>
+        var die1Image, die2Image, die3Image, die4Image, die5Image, die6Image;
+        var die7Image, die8Image, die9Image, die10Image, die11Image, die12Image;
+
+        function start() {
+            var button = document.getElementById("rollButton");
+            button.addEventListener("click", rollDice);
+
+            die1Image = document.getElementById("die1");
+            die2Image = document.getElementById("die2");
+            die3Image = document.getElementById("die3");
+            die4Image = document.getElementById("die4");
+            die5Image = document.getElementById("die5");
+            die6Image = document.getElementById("die6");
+            die7Image = document.getElementById("die7");
+            die8Image = document.getElementById("die8");
+            die9Image = document.getElementById("die9");
+            die10Image = document.getElementById("die10");
+            die11Image = document.getElementById("die11");
+            die12Image = document.getElementById("die12");
+        }
+
+        function setImage(dieImg) {
+            var dieValue = Math.floor(1 + Math.random() * 6);
+            dieImg.setAttribute("src", "die" + dieValue + ".png");
+            dieImg.setAttribute("alt", "die image with " + dieValue + " spot(s)");
+            return dieValue;
+        }
+
+        function rollDice() {
+            var counts = [0, 0, 0, 0, 0, 0]; // Array to store counts for each number
+            var rolls = 12; // Number of dice rolls
+
+            for (var i = 0; i < rolls; i++) {
+                var dieValue = setImage(window["die" + (i + 1) + "Image"]);
+                counts[dieValue - 1]++;
+            }
+
+            updateTable(counts, rolls);
+        }
+
+        function updateTable(counts, rolls) {
+            var tableBody = document.getElementById("resultTableBody");
+            tableBody.innerHTML = "";
+
+            for (var i = 0; i < counts.length; i++) {
+                var probability = (counts[i] / rolls) * 100;
+                var row = `<tr>
+                               <td>${i + 1}</td>
+                               <td>${counts[i]}</td>
+                               <td>${probability.toFixed(2)}%</td>
+                           </tr>`;
+                tableBody.innerHTML += row;
+            }
+        }
+
+        window.addEventListener("load", start);
+    </script>
+</body>
+</html>
